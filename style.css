@@ -1,0 +1,565 @@
+/* ===================================
+   TOKENS
+==================================== */
+:root {
+  --bg: #fff1f5;
+  --bg-deep: #ffe0eb;
+  --paper: #fffdfb;
+  --primary: #ff6b9d;
+  --primary-deep: #e84a77;
+  --ink: #5c3a4d;
+  --muted: #c79aab;
+  --gold: #f4b860;
+  --radius: 22px;
+  --shadow: 0 14px 32px rgba(232, 74, 119, 0.18);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  min-height: 100vh;
+  font-family: "Quicksand", sans-serif;
+  color: var(--ink);
+  background: linear-gradient(160deg, var(--bg) 0%, var(--bg-deep) 100%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 28px 16px 40px;
+  overflow-x: hidden;
+  position: relative;
+}
+
+button {
+  font-family: inherit;
+}
+
+button:focus-visible,
+input:focus-visible {
+  outline: 3px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* ===================================
+   BACKGROUND DECOR
+==================================== */
+.bg-decor {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.petal {
+  position: absolute;
+  top: -10vh;
+  animation: fall linear infinite;
+}
+
+@keyframes fall {
+  to {
+    transform: translateY(120vh) rotate(360deg);
+  }
+}
+
+/* ===================================
+   PROGRESS STAMPS
+==================================== */
+.progress {
+  display: flex;
+  gap: 10px;
+  z-index: 2;
+}
+
+.stamp {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--primary);
+  color: var(--primary);
+  font-size: 13px;
+  background: var(--paper);
+  transition: all 0.35s ease;
+}
+
+.stamp.is-done {
+  background: var(--primary-deep);
+  border-color: var(--primary-deep);
+  color: #fff;
+  transform: scale(1.08);
+}
+
+/* ===================================
+   STAGE / PAGES
+==================================== */
+.stage {
+  position: relative;
+  width: 100%;
+  max-width: 420px;
+  min-height: 520px;
+  z-index: 2;
+}
+
+.page {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(16px) scale(0.98);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.page.is-active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0) scale(1);
+  position: relative;
+}
+
+/* ===================================
+   PAGE 1 — ENVELOPE
+==================================== */
+.envelope {
+  position: relative;
+  width: 240px;
+  height: 160px;
+  margin: 10px auto 0;
+}
+
+.envelope__letter-peek {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: -16px;
+  height: 80px;
+  background: #fff;
+  border-radius: 8px 8px 0 0;
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.04);
+  z-index: 1;
+  transition: transform 0.6s ease;
+}
+
+.envelope__back {
+  position: absolute;
+  inset: 0;
+  background: var(--paper);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  z-index: 2;
+}
+
+.envelope__flap {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 0;
+  height: 0;
+  border-left: 120px solid transparent;
+  border-right: 120px solid transparent;
+  border-top: 80px solid var(--bg-deep);
+  transform-origin: top center;
+  opacity: 1;
+  transition: transform 0.6s ease, opacity 0.5s ease;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.06));
+  z-index: 3;
+}
+
+.envelope.is-open .envelope__flap {
+  transform: translateY(-70px) scaleY(0.4);
+  opacity: 0;
+}
+
+.envelope.is-open .envelope__letter-peek {
+  transform: translateY(-46px);
+}
+
+.seal {
+  position: absolute;
+  left: 50%;
+  top: 64%;
+  transform: translate(-50%, -50%);
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  cursor: pointer;
+  background: var(--primary-deep);
+  color: #fff;
+  font-size: 22px;
+  box-shadow: var(--shadow);
+  z-index: 4;
+  animation: pulse 2.4s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+}
+
+.envelope.is-open .seal {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.to-label {
+  font-family: "Caveat", cursive;
+  font-size: 1.7rem;
+  margin: 0;
+  text-align: center;
+}
+
+.hint {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 0;
+  text-align: center;
+}
+
+/* ===================================
+   PAGE 2 — LETTER / THE QUESTION
+==================================== */
+.letter-card {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 32px 24px 28px;
+  width: 100%;
+  text-align: center;
+  position: relative;
+}
+
+.letter-card::before {
+  content: "";
+  position: absolute;
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%) rotate(-3deg);
+  width: 90px;
+  height: 26px;
+  background: rgba(255, 107, 157, 0.35);
+  border: 1px solid rgba(255, 107, 157, 0.5);
+}
+
+.letter-greeting {
+  font-family: "Caveat", cursive;
+  font-size: 1.9rem;
+  margin: 6px 0 6px;
+  color: var(--primary-deep);
+}
+
+.letter-body {
+  font-size: 0.95rem;
+  line-height: 1.65;
+  color: var(--ink);
+  margin: 0 0 18px;
+}
+
+.letter-question {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--primary-deep);
+  margin: 0 0 22px;
+}
+
+.choice-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  min-height: 54px;
+}
+
+/* ===================================
+   BUTTONS
+==================================== */
+.btn {
+  font-family: "Fredoka", sans-serif;
+  font-weight: 600;
+  font-size: 1rem;
+  border: none;
+  border-radius: 999px;
+  padding: 14px 28px;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.btn-yes {
+  background: var(--primary-deep);
+  color: #fff;
+  box-shadow: var(--shadow);
+}
+
+.btn-yes:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.btn-yes:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-no {
+  background: transparent;
+  color: var(--muted);
+  border: 2px solid var(--muted);
+}
+
+.btn-no.is-runaway {
+  position: fixed;
+  z-index: 50;
+  transition: top 0.25s ease, left 0.25s ease;
+}
+
+.btn-ghost {
+  background: none;
+  border: 2px dashed var(--primary);
+  color: var(--primary-deep);
+  padding: 10px 20px;
+  font-size: 0.85rem;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: "Fredoka", sans-serif;
+  font-weight: 500;
+}
+
+.btn-ghost:hover {
+  background: rgba(255, 107, 157, 0.08);
+}
+
+/* ===================================
+   PAGE 3 & 4 — TICKET / BOARDING PASS
+==================================== */
+.ticket {
+  background: var(--paper);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  width: 100%;
+  display: flex;
+  position: relative;
+  overflow: hidden;
+}
+
+.ticket::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 74px;
+  border-left: 2px dashed rgba(92, 58, 77, 0.18);
+}
+
+.ticket__main {
+  flex: 1;
+  padding: 26px 22px;
+  min-width: 0;
+}
+
+.ticket__stub {
+  width: 74px;
+  flex-shrink: 0;
+  background: var(--primary);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-family: "Fredoka", sans-serif;
+  letter-spacing: 2px;
+}
+
+.ticket__stub-icon {
+  font-size: 1.4rem;
+}
+
+.ticket__stub-code {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.notch {
+  position: absolute;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--bg);
+  right: 63px;
+  z-index: 2;
+}
+
+.notch-top {
+  top: -11px;
+}
+
+.notch-bottom {
+  bottom: -11px;
+}
+
+.ticket__brand {
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.7rem;
+  letter-spacing: 3px;
+  color: var(--muted);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.ticket__title {
+  font-family: "Caveat", cursive;
+  font-size: 1.9rem;
+  margin: 2px 0 16px;
+  color: var(--primary-deep);
+}
+
+.ticket__field label {
+  display: block;
+  font-size: 0.8rem;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+
+.ticket__field input[type="date"] {
+  width: 100%;
+  padding: 11px 12px;
+  border-radius: 12px;
+  border: 2px solid var(--bg-deep);
+  font-family: "Quicksand", sans-serif;
+  font-size: 1rem;
+  background: #fff;
+  color: var(--ink);
+}
+
+.ticket__day {
+  font-family: "Fredoka", sans-serif;
+  font-size: 0.95rem;
+  color: var(--primary-deep);
+  margin: 12px 0 4px;
+  min-height: 1.4em;
+}
+
+.ticket__note {
+  font-size: 0.85rem;
+  color: var(--muted);
+  margin: 10px 0 0;
+  line-height: 1.5;
+}
+
+.ticket__details {
+  margin: 0;
+}
+
+.ticket__details > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 7px 0;
+  border-bottom: 1px dashed rgba(92, 58, 77, 0.15);
+  font-size: 0.92rem;
+}
+
+.ticket__details > div:last-child {
+  border-bottom: none;
+}
+
+.ticket__details dt {
+  color: var(--muted);
+}
+
+.ticket__details dd {
+  margin: 0;
+  font-weight: 600;
+  text-align: right;
+}
+
+.closing {
+  font-family: "Caveat", cursive;
+  font-size: 1.7rem;
+  color: var(--primary-deep);
+  margin: 4px 0 0;
+  text-align: center;
+}
+
+/* ===================================
+   CONFETTI
+==================================== */
+#confetti-layer {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 100;
+  overflow: hidden;
+}
+
+.confetti-piece {
+  position: absolute;
+  top: -10vh;
+  animation: confetti-fall linear forwards;
+}
+
+@keyframes confetti-fall {
+  to {
+    transform: translateY(120vh) rotate(720deg);
+    opacity: 0;
+  }
+}
+
+/* ===================================
+   RESPONSIVE
+==================================== */
+@media (max-width: 360px) {
+  .envelope {
+    width: 210px;
+    height: 140px;
+  }
+  .envelope__flap {
+    border-left-width: 105px;
+    border-right-width: 105px;
+    border-top-width: 70px;
+  }
+}
+
+/* ===================================
+   REDUCED MOTION
+==================================== */
+@media (prefers-reduced-motion: reduce) {
+  .petal,
+  .confetti-piece,
+  .seal {
+    animation: none !important;
+  }
+  .page,
+  .envelope__flap,
+  .envelope__letter-peek {
+    transition: none !important;
+  }
+}

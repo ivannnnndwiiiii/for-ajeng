@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1" />
+  <title>Untuk Ajeng 💌</title>
+  <meta name="description" content="Ada surat kecil buat Ajeng... buka kalau berani 🌸" />
+
+  <!-- Open Graph (biar bagus kalau di-share) -->
+  <meta property="og:title" content="Untuk Ajeng 💌" />
+  <meta property="og:description" content="Ada satu pertanyaan kecil di dalam surat ini..." />
+  <meta property="og:type" content="website" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💖</text></svg>" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Quicksand:wght@400;500;600;700&family=Fredoka:wght@500;600&display=swap" rel="stylesheet" />
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- dekorasi background, kelopak/hati melayang -->
+  <div class="bg-decor" aria-hidden="true"></div>
+
+  <!-- progress: 4 stamp hati -->
+  <header class="progress" aria-hidden="true">
+    <span class="stamp is-done" data-stamp="1">♥</span>
+    <span class="stamp" data-stamp="2">♥</span>
+    <span class="stamp" data-stamp="3">♥</span>
+    <span class="stamp" data-stamp="4">♥</span>
+  </header>
+
+  <main class="stage">
+
+    <!-- HALAMAN 1: START / SURAT TERTUTUP -->
+    <section class="page is-active" id="page-1" data-page="1">
+      <div class="envelope" id="envelope">
+        <div class="envelope__letter-peek"></div>
+        <div class="envelope__back"></div>
+        <div class="envelope__flap"></div>
+        <button class="seal" id="openSeal" aria-label="Buka surat untuk Ajeng">
+          <span>♥</span>
+        </button>
+      </div>
+      <p class="to-label">Untuk: <strong>Ajeng</strong></p>
+      <p class="hint">tap segel di atas buat buka suratnya~</p>
+    </section>
+
+    <!-- HALAMAN 2: PERTANYAAN -->
+    <section class="page" id="page-2" data-page="2">
+      <article class="letter-card">
+        <p class="letter-greeting">Hai Ajeng,</p>
+        <p class="letter-body">
+          Aku mau ngajak main, tapi biar ga boring aku bikin surat kecil
+          ini aja deh, semoga kamu suka ya 🌸
+          <br /><br />
+          Intinya, aku mau ngajak kamu main.
+        </p>
+        <p class="letter-question">kamu mau ga main sama aku?? 🥺💕</p>
+
+        <div class="choice-row">
+          <button class="btn btn-yes" id="btnYes">Yes, mau! 💕</button>
+          <button class="btn btn-no" id="btnNo">enggak dulu</button>
+        </div>
+      </article>
+    </section>
+
+    <!-- HALAMAN 3: PILIH HARI -->
+    <section class="page" id="page-3" data-page="3">
+      <div class="ticket">
+        <div class="ticket__main">
+          <p class="ticket__brand">DATE PASS</p>
+          <h2 class="ticket__title">Tiket Kencan 🎫</h2>
+
+          <div class="ticket__field">
+            <label for="dateInput">Pilih tanggalnya, Jeng</label>
+            <input type="date" id="dateInput" />
+          </div>
+
+          <p class="ticket__day" id="dayName">hari apa aja bebas, yang penting available~</p>
+          <p class="ticket__note">Pilih aja sesuka kamu, nanti aku samain sama jadwalku 😊</p>
+        </div>
+        <span class="notch notch-top" aria-hidden="true"></span>
+        <span class="notch notch-bottom" aria-hidden="true"></span>
+        <div class="ticket__stub" aria-hidden="true">
+          <span class="ticket__stub-icon">♥</span>
+          <span class="ticket__stub-code">A &amp; Y</span>
+        </div>
+      </div>
+
+      <button class="btn btn-yes" id="btnConfirmDate" disabled>Cetak tiket 🎫</button>
+    </section>
+
+    <!-- HALAMAN 4: KONFIRMASI, LOKASI MENYUSUL -->
+    <section class="page" id="page-4" data-page="4">
+      <div class="ticket ticket--final">
+        <div class="ticket__main">
+          <p class="ticket__brand">BOARDING PASS</p>
+          <h2 class="ticket__title">Yeay, fix yaa! 🎉</h2>
+
+          <dl class="ticket__details">
+            <div><dt>Penumpang</dt><dd>Ajeng</dd></div>
+            <div><dt>Tanggal</dt><dd id="finalDate">-</dd></div>
+            <div><dt>Lokasi</dt><dd>Segera diumumkan 🤫</dd></div>
+          </dl>
+
+          <p class="ticket__note">
+            Tempatnya menyusul ya, nanti aku kabarin lagi! Yang penting
+            tanggalnya udah ke-lock dulu 💌
+          </p>
+        </div>
+        <span class="notch notch-top" aria-hidden="true"></span>
+        <span class="notch notch-bottom" aria-hidden="true"></span>
+        <div class="ticket__stub" aria-hidden="true">
+          <span class="ticket__stub-icon">♥</span>
+          <span class="ticket__stub-code">A &amp; Y</span>
+        </div>
+      </div>
+
+      <button class="btn btn-ghost" id="btnEditDate">ubah tanggal</button>
+      <p class="closing">Sampai ketemu, Ajeng 🌸</p>
+    </section>
+
+  </main>
+
+  <div id="confetti-layer" aria-hidden="true"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
