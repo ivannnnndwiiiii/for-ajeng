@@ -147,11 +147,31 @@ dateInput.addEventListener("change", () => {
 
 btnConfirmDate.addEventListener("click", () => {
   if (!dateInput.value) return;
-  finalDate.textContent = formatDateID(dateInput.value);
+
+  const tanggal = formatDateID(dateInput.value);
+
+  finalDate.textContent = tanggal;
+
+  emailjs.send(
+    "service_7zu82wt",
+    "template_ac1f2el",
+    {
+      nama: "Ajeng",
+      tanggal: tanggal,
+      title: "Hasil Tiket Date",
+      email: "ivandwiseptyawan@gmail.com"
+    }
+  )
+  .then(() => {
+    console.log("Email berhasil dikirim");
+  })
+  .catch((error) => {
+    console.error("Email gagal dikirim:", error);
+  });
+
   burstConfetti();
   goToPage(4);
 });
-
 // =====================================================
 // HALAMAN 4 — UBAH TANGGAL (balik ke halaman 3)
 // =====================================================
